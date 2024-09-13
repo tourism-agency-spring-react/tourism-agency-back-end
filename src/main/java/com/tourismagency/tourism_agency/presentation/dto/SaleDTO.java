@@ -1,4 +1,4 @@
-package com.tourismagency.tourism_agency.dto;
+package com.tourismagency.tourism_agency.presentation.dto;
 
 import com.tourismagency.tourism_agency.enums.PaymentMethodEnum;
 import lombok.Builder;
