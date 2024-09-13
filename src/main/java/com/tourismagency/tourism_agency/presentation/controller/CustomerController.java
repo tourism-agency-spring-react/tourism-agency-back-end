@@ -53,12 +53,4 @@ public class CustomerController {
         return ResponseEntity.ok("Cliente eliminado correctamente");
     }
 
-
-
-
-
-
-
-
-
 }
