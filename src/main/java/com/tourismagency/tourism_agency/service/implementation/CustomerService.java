@@ -2,12 +2,16 @@ package com.tourismagency.tourism_agency.service.implementation;
 
 import com.tourismagency.tourism_agency.persistense.model.Customer;
 import com.tourismagency.tourism_agency.persistense.repository.ICustomerRepository;
+import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
 import com.tourismagency.tourism_agency.service.interfaces.ICustomerService;
+import com.tourismagency.tourism_agency.util.mapper.CustomerMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,38 +20,68 @@ public class CustomerService implements ICustomerService {
     private final ICustomerRepository customerRepository;
 
     @Override
-    public Customer getById(Long id) {
-        return customerRepository.findById(id).orElse(null);
+    @Transactional(readOnly = true)
+    public CustomerDTO getById(Long id) {
+        Customer customer = customerRepository.findById(id).orElse(null);
+        if (customer == null) {
+            throw new EntityNotFoundException("Customer not found");
+        }else{
+            return CustomerMapper.customerToCustomerDto(customer);
+        }
     }
 
     @Override
-    public List<Customer> getAll() {
-        return customerRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<CustomerDTO> getAll() {
+        List<Customer> customerList = customerRepository.findAll();
+
+        if (customerList.isEmpty()) {
+            throw new EntityNotFoundException("List is empty.");
+        }else{
+            return customerList.stream()
+                    .map(CustomerMapper::customerToCustomerDto)
+                    .toList();
+        }
     }
 
     @Override
     @Transactional
-    public void save(Customer customer) {
-        customerRepository.save(customer);
+    public void save(CustomerDTO customerDTO) {
+        Customer customerSave = CustomerMapper.customerDTOToCustomer(customerDTO);
+
+        if(customerRepository.findByDni(customerSave.getDni()).isPresent()){
+            throw new IllegalArgumentException("The ID entered already exists in the data base");
+        }else{
+            customerRepository.save(customerSave);
+        }
     }
 
     @Override
     @Transactional
-    public void update(Long id, Customer customer) {
-        Customer customerGet = this.getById(id);
+    public void update(Long id, CustomerDTO customerDTO) {
+        Optional<Customer> customerOptional = customerRepository.findById(id);
 
-        customerGet.setFirstName(customer.getFirstName());
-        customerGet.setLastName(customer.getLastName());
-        customerGet.setPhoneNumber(customer.getPhoneNumber());
-        customerGet.setBirthDate(customer.getBirthDate());
-        customerGet.setDirection(customer.getDirection());
-
-        customerRepository.save(customerGet);
+        if(customerOptional.isPresent()){
+            customerOptional.get().setId(customerDTO.id());
+            customerOptional.get().setFirstName(customerDTO.firstName());
+            customerOptional.get().setLastName(customerDTO.lastName());
+            customerOptional.get().setDni(customerDTO.dni());
+            customerOptional.get().setPhoneNumber(customerDTO.phoneNumber());
+            customerRepository.save(customerOptional.get());
+        }else{
+            throw new IllegalArgumentException("The ID entered already exists in the data base");
+        }
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        customerRepository.deleteById(id);
+        Optional<Customer> customer = customerRepository.findById(id);
+
+        if(customer.isPresent()) {
+            customerRepository.delete(customer.get());
+        }else{
+            throw new EntityNotFoundException("Customer not found.");
+        }
     }
 }
