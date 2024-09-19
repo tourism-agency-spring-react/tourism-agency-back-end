@@ -1,9 +1,9 @@
 package com.tourismagency.tourism_agency.presentation.controller;
 
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
-import com.tourismagency.tourism_agency.persistense.model.Customer;
 import com.tourismagency.tourism_agency.service.implementation.CustomerService;
-import com.tourismagency.tourism_agency.util.mapper.CustomerMapper;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,37 +20,52 @@ public class CustomerController {
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<?> get(@PathVariable("id") Long id) {
-        CustomerDTO customerDTO = CustomerMapper.customerToCustomerDto(customerService.getById(id));
-        return ResponseEntity.ok(customerDTO);
+        try {
+            CustomerDTO customerDTO = customerService.getById(id);
+            return ResponseEntity.ok(customerDTO);
+        } catch (EntityNotFoundException exception) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/customers")
-    public ResponseEntity<?> getAll(){
-        List<Customer> customerList = customerService.getAll();
-        List<CustomerDTO> customerDTOList = customerList.stream()
-                .map(CustomerMapper::customerToCustomerDto)
-                .toList();
-        return ResponseEntity.ok(customerDTOList);
+    public ResponseEntity<?> getAll () {
+        try {
+            List<CustomerDTO> customerDTOList = customerService.getAll();
+            return ResponseEntity.ok(customerDTOList);
+        }catch(EntityNotFoundException exception) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/customer")
-    public ResponseEntity<?> create(@RequestBody CustomerDTO customerDTO) {
-        Customer customer = CustomerMapper.customerDTOToCustomer(customerDTO);
-        customerService.save(customer);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Cliente creado correctamente");
+    public ResponseEntity<?> create (@RequestBody CustomerDTO customerDTO){
+        try {
+            customerService.save(customerDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Cliente creado correctamente");
+        }catch(IllegalArgumentException exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
     @PutMapping("/customer")
-    public ResponseEntity<?> update(@RequestBody CustomerDTO customerDTO) {
-        Customer customer = CustomerMapper.customerDTOToCustomer(customerDTO);
-        customerService.update(customer.getId(), customer);
-        return ResponseEntity.ok("Cliente actualizado correctamente");
+    public ResponseEntity<?> update (@RequestBody CustomerDTO customerDTO){
+        try{
+            customerService.update(customerDTO.id(), customerDTO);
+            return ResponseEntity.ok("Cliente actualizado correctamente");
+        }catch (IllegalArgumentException exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
     @DeleteMapping("/customer/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        customerService.delete(id);
-        return ResponseEntity.ok("Cliente eliminado correctamente");
+    public ResponseEntity<?> delete (@PathVariable("id") Long id){
+        try {
+            customerService.delete(id);
+            return ResponseEntity.ok("Cliente eliminado correctamente");
+        }catch (EntityNotFoundException exception){
+            return ResponseEntity.notFound().build();
+        }
     }
-
 }
+

@@ -1,18 +1,18 @@
 package com.tourismagency.tourism_agency.service.interfaces;
 
-import com.tourismagency.tourism_agency.persistense.model.Customer;
+import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
 
 import java.util.List;
 
 public interface ICustomerService {
 
-    public Customer getById (Long id);
+    public CustomerDTO getById (Long id);
 
-    public List<Customer> getAll ();
+    public List<CustomerDTO> getAll ();
 
-    public void save (Customer customer);
+    public void save (CustomerDTO customerDTO);
 
-    public void update (Long id, Customer customer);
+    public void update (Long id, CustomerDTO customerDTO);
 
     public void delete (Long id);
 }
