@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,7 +111,7 @@ public class CustomerController {
                     )
             }
     )
-    public ResponseEntity<?> create (@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<?> create (@RequestBody @Valid CustomerDTO customerDTO){
         try {
             customerService.save(customerDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Cliente creado correctamente");
@@ -142,7 +143,7 @@ public class CustomerController {
                     )
             }
     )
-    public ResponseEntity<?> update (@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<?> update (@RequestBody @Valid CustomerDTO customerDTO){
         try{
             customerService.update(customerDTO.id(), customerDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Cliente actualizado correctamente");
