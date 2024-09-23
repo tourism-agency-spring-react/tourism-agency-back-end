@@ -1,6 +1,7 @@
 package com.tourismagency.tourism_agency.presentation.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public record CustomerDTO(Long id,
                           @Size(min = 7, max = 120, message = "Enter a minimum of 7 characters and a maximum of 120")
                           String direction,
 
-                          @NotBlank(message = "The birthDate can´t be null or empty")
+                          @NotNull
                           @Past(message = "Enter the correct date of your birthday")
                           LocalDate birthDate){
 }
