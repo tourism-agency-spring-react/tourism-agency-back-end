@@ -1,6 +1,7 @@
 package com.tourismagency.tourism_agency.presentation.controller;
 
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
+import com.tourismagency.tourism_agency.service.exception.ResourceNotFoundException;
 import com.tourismagency.tourism_agency.service.implementation.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,8 +53,8 @@ public class CustomerController {
         try {
             CustomerDTO customerDTO = customerService.getById(id);
             return ResponseEntity.ok(customerDTO);
-        } catch (EntityNotFoundException exception) {
-            return ResponseEntity.notFound().build();
+        } catch (ResourceNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
 
@@ -115,7 +117,7 @@ public class CustomerController {
         try {
             customerService.save(customerDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Cliente creado correctamente");
-        }catch(IllegalArgumentException exception){
+        }catch(IllegalArgumentException exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }

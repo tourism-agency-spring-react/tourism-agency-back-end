@@ -3,10 +3,12 @@ package com.tourismagency.tourism_agency.service.implementation;
 import com.tourismagency.tourism_agency.persistense.model.Customer;
 import com.tourismagency.tourism_agency.persistense.repository.ICustomerRepository;
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
+import com.tourismagency.tourism_agency.service.exception.ResourceNotFoundException;
 import com.tourismagency.tourism_agency.service.interfaces.ICustomerService;
 import com.tourismagency.tourism_agency.util.mapper.CustomerMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,7 @@ public class CustomerService implements ICustomerService {
     public CustomerDTO getById(Long id) {
         Customer customer = customerRepository.findById(id).orElse(null);
         if (customer == null) {
-            throw new EntityNotFoundException("Customer not found");
+            throw new ResourceNotFoundException("customer", "id", id);
         }else{
             return CustomerMapper.customerToCustomerDto(customer);
         }
@@ -67,6 +69,7 @@ public class CustomerService implements ICustomerService {
             customerOptional.get().setLastName(customerDTO.lastName());
             customerOptional.get().setDni(customerDTO.dni());
             customerOptional.get().setPhoneNumber(customerDTO.phoneNumber());
+            customerOptional.get().setBirthDate(customerDTO.birthDate());
             customerRepository.save(customerOptional.get());
         }else{
             throw new IllegalArgumentException("The ID entered already exists in the data base");
