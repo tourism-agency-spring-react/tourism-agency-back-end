@@ -1,14 +1,16 @@
 package com.tourismagency.tourism_agency.presentation.controller;
 
-import com.tourismagency.tourism_agency.persistense.model.TouristPackage;
+import com.tourismagency.tourism_agency.presentation.dto.TouristPackageDTO;
+import com.tourismagency.tourism_agency.service.exception.ResourceNotFoundException;
 import com.tourismagency.tourism_agency.service.interfaces.ITouristPackage;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-        import java.util.List;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -17,52 +19,52 @@ public class TouristPackageController {
 
     private final ITouristPackage touristPackageService;
 
-    @GetMapping
-    public ResponseEntity<List<TouristPackage>> getAllTouristPackages() {
+    @GetMapping("/packages")
+    public ResponseEntity<?> getAllTouristPackages() {
         try {
-            List<TouristPackage> touristPackages = touristPackageService.getAll();
-            return ResponseEntity.ok(touristPackages);
-        } catch (EntityNotFoundException e) {
+            List<TouristPackageDTO> touristPackageDTOList = touristPackageService.getAll();
+            return ResponseEntity.ok(touristPackageDTOList);
+        }catch(EntityNotFoundException exception) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TouristPackage> getTouristPackage(@PathVariable Long id) {
+    @GetMapping("/package/{id}")
+    public ResponseEntity<?> getTouristPackage(@PathVariable Long id) {
         try {
-            TouristPackage touristPackage = touristPackageService.getById(id);
-            return ResponseEntity.ok(touristPackage);
-        }catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            TouristPackageDTO touristPackageDTO = touristPackageService.getById(id);
+            return ResponseEntity.ok(touristPackageDTO);
+        } catch (ResourceNotFoundException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
 
-    @PostMapping
-    public ResponseEntity<TouristPackage> createTouristPackage (@RequestBody TouristPackage touristPackage) {
+    @PostMapping("/package")
+    public ResponseEntity<?> createTouristPackage (@RequestBody @Valid TouristPackageDTO touristPackageDTO) {
         try {
-            touristPackageService.save(touristPackage);
-            return ResponseEntity.status(HttpStatus.CREATED).body(touristPackage);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            touristPackageService.save(touristPackageDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Paquete turístico creado correctamente");
+        }catch(IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TouristPackage> updateTouristPackage(@PathVariable Long id, @RequestBody TouristPackage touristPackage) {
-        try {
-            touristPackageService.update(id, touristPackage);
-            return ResponseEntity.ok(touristPackage);
-        }catch (Exception e) {
-            return ResponseEntity.notFound().build();
+    @PutMapping("/package")
+    public ResponseEntity<?> updateTouristPackage(@RequestBody @Valid TouristPackageDTO touristPackageDTO) {
+        try{
+            touristPackageService.update(touristPackageDTO.id(), touristPackageDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Paquete turístico actualizado correctamente");
+        }catch (IllegalArgumentException exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTouristPackage(@PathVariable Long id) {
+    @DeleteMapping("/package/{id}")
+    public ResponseEntity<?> deleteTouristPackage(@PathVariable Long id) {
         try {
             touristPackageService.delete(id);
-            return ResponseEntity.ok().build();
-        }catch (Exception e) {
+            return ResponseEntity.ok("Paquete turístico eliminado correctamente");
+        }catch (EntityNotFoundException exception){
             return ResponseEntity.notFound().build();
         }
     }
