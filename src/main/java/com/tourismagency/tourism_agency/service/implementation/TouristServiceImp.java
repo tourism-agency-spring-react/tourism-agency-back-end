@@ -2,6 +2,7 @@ package com.tourismagency.tourism_agency.service.implementation;
 
 import com.tourismagency.tourism_agency.persistense.model.TouristService;
 import com.tourismagency.tourism_agency.persistense.repository.ITouristServiceRepository;
+import com.tourismagency.tourism_agency.presentation.dto.TouristServiceDTO;
 import com.tourismagency.tourism_agency.service.interfaces.ITouristService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,27 +19,28 @@ public class TouristServiceImp implements ITouristService {
     private final ITouristServiceRepository touristServiceRepository;
 
     @Override
-    public TouristService getById (Long id) {
+    public TouristService
+    getById (Long id) {
         return touristServiceRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
-    public void save (TouristService touristService) {
-        touristServiceRepository.save(touristService);
+    public void save (TouristServiceDTO touristServiceDTO) {
+        touristServiceRepository.save(touristServiceDTO);
     }
 
     @Override
     @Transactional
-    public void update (Long id, TouristService touristService) {
+    public void update (Long id, TouristServiceDTO touristServiceDTO) {
         TouristService touristServiceGet = this.getById(id);
 
-        touristServiceGet.setName(touristService.getName());
-        touristServiceGet.setDescription(touristService.getDescription());
-        touristServiceGet.setDestiny(touristService.getDestiny());
-        touristServiceGet.setDate(touristService.getDate());
-        touristServiceGet.setPrice(touristService.getPrice());
-        touristServiceGet.setServiceType(touristService.getServiceType());
+        touristServiceGet.setName(touristServiceDTO.name());
+        touristServiceGet.setDescription(touristServiceDTO.description());
+        touristServiceGet.setDestiny(touristServiceDTO.destiny());
+        touristServiceGet.setDate(touristServiceDTO.date());
+        touristServiceGet.setPrice(touristServiceDTO.price());
+        touristServiceGet.setServiceType(touristServiceDTO.serviceType());
 
         touristServiceRepository.save(touristServiceGet);
 
