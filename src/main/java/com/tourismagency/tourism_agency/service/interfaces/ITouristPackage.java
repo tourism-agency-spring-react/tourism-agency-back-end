@@ -15,7 +15,4 @@ public interface ITouristPackage {
     public void delete (Long id);
 
     public List<TouristPackageDTO> getAll();
-
-
-
 }
