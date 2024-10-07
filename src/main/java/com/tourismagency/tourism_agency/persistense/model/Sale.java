@@ -36,13 +36,15 @@ public class Sale {
     @ManyToMany(targetEntity = TouristService.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "sale_id_tourist_service_id",
             joinColumns = @JoinColumn(name = "sale_id"),
-            inverseJoinColumns = @JoinColumn(name = "tourist_service_id"))
+            inverseJoinColumns = @JoinColumn(name = "tourist_service_id")
+    )
     private List<TouristService> touristServicesList;
 
     @ManyToMany(targetEntity = TouristPackage.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "sale_id_tourist_package_id",
             joinColumns = @JoinColumn(name = "sale_id"),
-            inverseJoinColumns = @JoinColumn(name = "tourist_package_id"))
+            inverseJoinColumns = @JoinColumn(name = "tourist_package_id")
+    )
     private List<TouristPackage> touristPackagesList;
 
     @PrePersist
