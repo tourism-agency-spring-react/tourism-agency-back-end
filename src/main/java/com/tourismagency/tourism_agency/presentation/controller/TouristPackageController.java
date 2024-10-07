@@ -115,7 +115,7 @@ public class TouristPackageController {
     public ResponseEntity<?> createTouristPackage (@RequestBody @Valid TouristPackageDTO touristPackageDTO) {
         try {
             touristPackageService.save(touristPackageDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Paquete turístico creado correctamente");
+            return ResponseEntity.status(HttpStatus.CREATED).body("TouristPackage created successfully. ");
         }catch(IllegalArgumentException exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
@@ -147,7 +147,7 @@ public class TouristPackageController {
     public ResponseEntity<?> updateTouristPackage(@RequestBody @Valid TouristPackageDTO touristPackageDTO) {
         try{
             touristPackageService.update(touristPackageDTO.id(), touristPackageDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Paquete turístico actualizado correctamente");
+            return ResponseEntity.status(HttpStatus.CREATED).body("TouristPackage updated successfully. ");
         }catch (IllegalArgumentException exception){
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
@@ -179,7 +179,7 @@ public class TouristPackageController {
     public ResponseEntity<?> deleteTouristPackage(@PathVariable Long id) {
         try {
             touristPackageService.delete(id);
-            return ResponseEntity.ok("Paquete turístico eliminado correctamente");
+            return ResponseEntity.ok("TouristPackage deleted successfully. ");
         }catch (EntityNotFoundException exception){
             return ResponseEntity.notFound().build();
         }
