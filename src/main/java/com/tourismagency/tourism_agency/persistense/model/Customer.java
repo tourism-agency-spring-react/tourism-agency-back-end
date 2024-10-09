@@ -1,22 +1,21 @@
-package com.tourismagency.tourism_agency.model;
+package com.tourismagency.tourism_agency.persistense.model;
 
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@ToString
+@EqualsAndHashCode
 @Getter
 @Setter
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "customers")
-public class Customer extends UserEntity{
+public class Customer{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,25 +1,26 @@
-package com.tourismagency.tourism_agency.model;
+package com.tourismagency.tourism_agency.persistense.model;
 
-import com.tourismagency.tourism_agency.enums.RoleEnum;
+import com.tourismagency.tourism_agency.enums.CountryEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 @Entity
-@Table(name = "roles")
-public class RoleEntity {
+@Table(name = "countries")
+public class CountryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role_name")
-    private RoleEnum role;
+    @Column(name = "country_name")
+    private CountryEnum countryName;
 }

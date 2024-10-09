@@ -1,4 +1,4 @@
-package com.tourismagency.tourism_agency.model;
+package com.tourismagency.tourism_agency.persistense.model;
 
 import jakarta.persistence.*;
 import lombok.*;

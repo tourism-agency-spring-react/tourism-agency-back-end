@@ -1,4 +1,4 @@
-package com.tourismagency.tourism_agency.model;
+package com.tourismagency.tourism_agency.persistense.model;
 
 import com.tourismagency.tourism_agency.enums.CountryEnum;
 import com.tourismagency.tourism_agency.enums.ServiceTypeEnum;

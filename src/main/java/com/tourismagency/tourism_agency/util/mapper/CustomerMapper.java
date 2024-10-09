@@ -1,7 +1,7 @@
-package com.tourismagency.tourism_agency.util.mappers;
+package com.tourismagency.tourism_agency.util.mapper;
 
-import com.tourismagency.tourism_agency.dto.CustomerDTO;
-import com.tourismagency.tourism_agency.model.Customer;
+import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
+import com.tourismagency.tourism_agency.persistense.model.Customer;
 
 public class CustomerMapper {
     public static CustomerDTO customerToCustomerDto(Customer customer) {

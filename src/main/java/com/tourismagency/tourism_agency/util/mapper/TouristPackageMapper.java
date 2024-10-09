@@ -1,7 +1,7 @@
-package com.tourismagency.tourism_agency.util.mappers;
+package com.tourismagency.tourism_agency.util.mapper;
 
-import com.tourismagency.tourism_agency.dto.TouristPackageDTO;
-import com.tourismagency.tourism_agency.model.TouristPackage;
+import com.tourismagency.tourism_agency.presentation.dto.TouristPackageDTO;
+import com.tourismagency.tourism_agency.persistense.model.TouristPackage;
 
 import java.util.stream.Collectors;
 

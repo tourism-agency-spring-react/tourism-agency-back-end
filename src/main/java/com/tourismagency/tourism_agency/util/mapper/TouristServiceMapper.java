@@ -1,7 +1,7 @@
-package com.tourismagency.tourism_agency.util.mappers;
+package com.tourismagency.tourism_agency.util.mapper;
 
-import com.tourismagency.tourism_agency.dto.TouristServiceDTO;
-import com.tourismagency.tourism_agency.model.TouristService;
+import com.tourismagency.tourism_agency.presentation.dto.TouristServiceDTO;
+import com.tourismagency.tourism_agency.persistense.model.TouristService;
 
 public class TouristServiceMapper {
 

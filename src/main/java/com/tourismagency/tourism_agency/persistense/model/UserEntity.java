@@ -1,10 +1,10 @@
-package com.tourismagency.tourism_agency.model;
+package com.tourismagency.tourism_agency.persistense.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -13,8 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@SuperBuilder
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Builder
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 @Table(name = "users")
 public class UserEntity {
