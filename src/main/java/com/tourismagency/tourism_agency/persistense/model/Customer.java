@@ -35,6 +35,6 @@ public class Customer{
     private String direction;
 
     @Temporal(TemporalType.DATE)
-    @Column(name="birth_date", columnDefinition = "DATE")
+    @Column(name="birth_date")
     private LocalDate birthDate;
 }

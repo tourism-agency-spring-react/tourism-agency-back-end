@@ -1,7 +1,6 @@
 package com.tourismagency.tourism_agency.presentation.dto;
 
 import com.tourismagency.tourism_agency.enums.CountryEnum;
-import com.tourismagency.tourism_agency.enums.ServiceTypeEnum;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -33,5 +32,5 @@ public record TouristServiceDTO(Long id,
                                 Double price,
 
                                 @Valid
-                                ServiceTypeEnum serviceType){
+                                ServiceTypeEntityDTO serviceTypeEntityDTO){
 }

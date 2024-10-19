@@ -1,16 +1,17 @@
 package com.tourismagency.tourism_agency.util.mapper;
 
+import com.tourismagency.tourism_agency.persistense.model.Sale;
 import com.tourismagency.tourism_agency.persistense.model.TouristPackage;
+import com.tourismagency.tourism_agency.presentation.dto.SaleDTO;
 import com.tourismagency.tourism_agency.presentation.dto.TouristPackageDTO;
-import com.tourismagency.tourism_agency.presentation.dto.TouristServiceDTO;
-import com.tourismagency.tourism_agency.persistense.model.TouristService;
 import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
-public interface TouristServiceMapper extends Converter<TouristService, TouristServiceDTO> {
+public interface TouristPackagesMapper extends Converter<List<TouristPackage>, List<TouristPackageDTO>> {
 
     @Override
-    TouristServiceDTO convert(TouristService resource);
-
+    List<TouristPackageDTO> convert(List<TouristPackage> source);
 }

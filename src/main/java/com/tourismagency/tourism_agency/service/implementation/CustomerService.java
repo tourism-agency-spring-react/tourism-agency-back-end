@@ -3,7 +3,6 @@ package com.tourismagency.tourism_agency.service.implementation;
 import com.tourismagency.tourism_agency.persistense.model.Customer;
 import com.tourismagency.tourism_agency.persistense.repository.ICustomerRepository;
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
-import com.tourismagency.tourism_agency.service.exception.ResourceNotFoundException;
 import com.tourismagency.tourism_agency.service.interfaces.ICustomerService;
 import com.tourismagency.tourism_agency.util.mapper.CustomerMapper;
 import jakarta.persistence.EntityNotFoundException;

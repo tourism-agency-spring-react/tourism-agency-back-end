@@ -3,7 +3,6 @@ package com.tourismagency.tourism_agency.service.implementation;
 import com.tourismagency.tourism_agency.persistense.model.TouristService;
 import com.tourismagency.tourism_agency.persistense.repository.ITouristServiceRepository;
 import com.tourismagency.tourism_agency.presentation.dto.TouristServiceDTO;
-import com.tourismagency.tourism_agency.service.exception.ResourceNotFoundException;
 import com.tourismagency.tourism_agency.service.interfaces.ITouristService;
 import com.tourismagency.tourism_agency.util.mapper.TouristServiceMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -58,7 +57,7 @@ public class TouristServiceService implements ITouristService {
             touristServiceOptional.get().setDestiny(touristServiceDTO.destiny());
             touristServiceOptional.get().setDate(touristServiceDTO.date());
             touristServiceOptional.get().setPrice(touristServiceDTO.price());
-            touristServiceOptional.get().setServiceType(touristServiceDTO.serviceType());
+            touristServiceOptional.get().setServiceType(touristServiceDTO.serviceTypeEntityDTO().serviceTypeName());
 
             touristServiceRepository.save(touristServiceOptional.get());
         }else{

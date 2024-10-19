@@ -35,9 +35,9 @@ public class TouristService {
 
     private Double price;
 
-    @Enumerated (EnumType.STRING)
-    private ServiceTypeEnum serviceType;
+    @OneToOne(targetEntity = ServiceTypeEntity.class, fetch = FetchType.EAGER)
+    private ServiceTypeEntity serviceTypeEntity;
 
-    @ManyToMany(mappedBy = "touristServicesList", targetEntity = Sale.class, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "touristServicesList", targetEntity = Sale.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Sale> salesList;
 }

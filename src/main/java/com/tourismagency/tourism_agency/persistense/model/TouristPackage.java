@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @ToString
-@EqualsAndHashCode(exclude = {"touristServicesList"})
+@EqualsAndHashCode(exclude = "touristServicesList")
 @Builder
 @Getter
 @Setter
@@ -22,11 +22,13 @@ public class TouristPackage {
     private Double price;
 
     @ManyToMany(targetEntity = TouristPackage.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name="tourist_package_tourist_service",
+    @JoinTable(
+            name="tourist_package_tourist_service",
             joinColumns = @JoinColumn(name = "tourist_package_id"),
-            inverseJoinColumns = @JoinColumn(name = "tourist_service_id"))
+            inverseJoinColumns = @JoinColumn(name = "tourist_service_id")
+    )
     private List<TouristService> touristServicesList;
 
-    @ManyToMany(mappedBy = "touristPackagesList", targetEntity = Sale.class, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "touristPackagesList", targetEntity = Sale.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Sale> salesList;
 }

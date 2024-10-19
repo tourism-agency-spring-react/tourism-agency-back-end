@@ -1,24 +1,11 @@
 package com.tourismagency.tourism_agency.presentation.advice.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
 @Builder
-public class ErrorApiResponse {
+public record ErrorApiResponse(String description,
+                               List<String> reasons) {
 
-    Date time = new Date();
-    String message;
-    String url;
-
-    public ErrorApiResponse(String url, String message) {
-        this.url = url.replace("uri=","");
-        this.message = message;
-    }
 }

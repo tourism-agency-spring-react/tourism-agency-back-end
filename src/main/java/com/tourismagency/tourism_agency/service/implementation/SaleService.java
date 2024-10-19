@@ -3,7 +3,6 @@ package com.tourismagency.tourism_agency.service.implementation;
 import com.tourismagency.tourism_agency.persistense.model.Sale;
 import com.tourismagency.tourism_agency.persistense.repository.ISaleRepository;
 import com.tourismagency.tourism_agency.presentation.dto.SaleDTO;
-import com.tourismagency.tourism_agency.service.exception.ResourceNotFoundException;
 import com.tourismagency.tourism_agency.service.interfaces.ISaleService;
 import com.tourismagency.tourism_agency.util.mapper.SaleMapper;
 import com.tourismagency.tourism_agency.util.mapper.TouristPackageMapper;
