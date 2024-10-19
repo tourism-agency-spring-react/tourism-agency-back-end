@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Builder
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 @Table(name = "users")
 public class UserEntity {

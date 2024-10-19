@@ -1,12 +1,13 @@
 package com.tourismagency.tourism_agency.presentation.dto;
 
-import com.tourismagency.tourism_agency.enums.CountryEnum;
+import com.tourismagency.tourism_agency.persistense.model.CountryEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Builder
@@ -20,7 +21,7 @@ public record TouristServiceDTO(Long id,
                                 String description,
 
                                 @Valid
-                                CountryEnum destiny,
+                                CountryEntity destiny,
 
                                 @NotNull
                                 @Future(message = "The date must be in the future")
@@ -32,5 +33,8 @@ public record TouristServiceDTO(Long id,
                                 Double price,
 
                                 @Valid
-                                ServiceTypeEntityDTO serviceTypeEntityDTO){
+                                ServiceTypeEntityDTO serviceTypeEntityDTO,
+
+                                @Valid
+                                List<SaleDTO> salesList){
 }

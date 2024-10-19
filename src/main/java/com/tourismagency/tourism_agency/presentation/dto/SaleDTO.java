@@ -1,6 +1,5 @@
 package com.tourismagency.tourism_agency.presentation.dto;
 
-import com.tourismagency.tourism_agency.enums.PaymentMethodEnum;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder
-public record SaleDTO(Long saleId,
+public record SaleDTO(Long id,
                       @Valid
                       CustomerDTO customerDTO,
 
@@ -29,5 +28,5 @@ public record SaleDTO(Long saleId,
                       List<TouristPackageDTO> touristPackageDTOList,
 
                       @Valid
-                      PaymentMethodEnum paymentMethod){
+                      PaymentMethodEntityDTO paymentMethod){
 }

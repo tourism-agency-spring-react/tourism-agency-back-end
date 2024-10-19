@@ -1,13 +1,8 @@
 package com.tourismagency.tourism_agency.presentation.controller;
 
 import com.tourismagency.tourism_agency.presentation.dto.TouristPackageDTO;
+import com.tourismagency.tourism_agency.presentation.payload.MessageResponse;
 import com.tourismagency.tourism_agency.service.interfaces.ITouristPackage;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -27,53 +22,45 @@ public class TouristPackageController {
     private final ITouristPackage touristPackageService;
 
     @GetMapping("/packages")
-    public ResponseEntity<?> getAllTouristPackages() {
-        try {
-            List<TouristPackageDTO> touristPackageDTOList = touristPackageService.getAll();
-            return ResponseEntity.ok(touristPackageDTOList);
-        }catch(EntityNotFoundException exception) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<List<TouristPackageDTO>> getAllTouristPackages() {
+        List<TouristPackageDTO> response = touristPackageService.getAll();
+        if(response.isEmpty()){
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/package/{id}")
-    public ResponseEntity<?> getTouristPackage(@Min(1) @PathVariable("id") Long id) {
-        try {
-            TouristPackageDTO touristPackageDTO = touristPackageService.getById(id);
-            return ResponseEntity.ok(touristPackageDTO);
-        } catch (ResourceNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+    public ResponseEntity<TouristPackageDTO> getTouristPackage(@Min(1) @PathVariable("id") Long id) {
+        TouristPackageDTO response = touristPackageService.getById(id);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/package")
-    public ResponseEntity<?> createTouristPackage (@RequestBody @Valid TouristPackageDTO touristPackageDTO) {
-        try {
-            touristPackageService.save(touristPackageDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("TouristPackage created successfully. ");
-        }catch(IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
+    public ResponseEntity<MessageResponse> createTouristPackage (@RequestBody @Valid TouristPackageDTO touristPackageDTO) {
+        touristPackageService.save(touristPackageDTO);
+        MessageResponse response = MessageResponse.builder()
+                .message("Registrado correctamente.")
+                .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/package/{id}")
-    public ResponseEntity<?> updateTouristPackage(@Min(1) @PathVariable("id") Long id, @RequestBody @Valid TouristPackageDTO touristPackageDTO) {
-        try{
-            touristPackageService.update(id, touristPackageDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("TouristPackage updated successfully. ");
-        }catch (IllegalArgumentException exception){
-            return ResponseEntity.badRequest().body(exception.getMessage());
-        }
+    public ResponseEntity<MessageResponse> updateTouristPackage(@Min(1) @PathVariable("id") Long id, @RequestBody @Valid TouristPackageDTO touristPackageDTO) {
+        touristPackageService.update(id, touristPackageDTO);
+        MessageResponse response = MessageResponse.builder()
+                .message("Actualizado correctamente.")
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/package/{id}")
-    public ResponseEntity<?> deleteTouristPackage(@Min(1) @PathVariable("id") Long id) {
-        try {
-            touristPackageService.delete(id);
-            return ResponseEntity.ok("TouristPackage deleted successfully. ");
-        }catch (EntityNotFoundException exception){
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<MessageResponse> deleteTouristPackage(@Min(1) @PathVariable("id") Long id) {
+        touristPackageService.delete(id);
+        MessageResponse response = MessageResponse.builder()
+                .message("Eliminado correctamente.")
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

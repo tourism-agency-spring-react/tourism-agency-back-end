@@ -1,7 +1,5 @@
 package com.tourismagency.tourism_agency.persistense.model;
 
-import com.tourismagency.tourism_agency.enums.CountryEnum;
-import com.tourismagency.tourism_agency.enums.ServiceTypeEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +27,8 @@ public class TouristService {
 
     @Enumerated (EnumType.STRING)
 
-    private CountryEnum destiny;
+    @OneToOne(fetch = FetchType.EAGER)
+    private CountryEntity destiny;
 
     private LocalDate date;
 

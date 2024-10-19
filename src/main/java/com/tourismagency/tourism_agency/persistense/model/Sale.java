@@ -26,9 +26,8 @@ public class Sale {
     @Column(name="create_at", columnDefinition = "DATE")
     private LocalDate createAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method")
-    private PaymentMethodEnum paymentMethod;
+    @OneToOne(fetch = FetchType.EAGER)
+    private PaymentMethodEntity paymentMethod;
 
     @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.PERSIST)
     private Customer customer;

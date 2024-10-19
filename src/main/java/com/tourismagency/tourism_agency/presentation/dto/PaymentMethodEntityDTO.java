@@ -1,7 +1,7 @@
 package com.tourismagency.tourism_agency.presentation.dto;
 
-import com.tourismagency.tourism_agency.enums.PaymentMethodEnum;
+import com.tourismagency.tourism_agency.persistense.model.PaymentMethodEntity;
 
 public record PaymentMethodEntityDTO(Long id,
-                                     PaymentMethodEnum paymentMethod) {
+                                     PaymentMethodEntity paymentMethodEntity) {
 }

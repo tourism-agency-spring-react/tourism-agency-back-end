@@ -1,15 +1,15 @@
 package com.tourismagency.tourism_agency.util.mapper;
 
 import com.tourismagency.tourism_agency.persistense.model.Customer;
+import com.tourismagency.tourism_agency.persistense.model.PaymentMethodEntity;
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
+import com.tourismagency.tourism_agency.presentation.dto.PaymentMethodEntityDTO;
 import org.mapstruct.Mapper;
 import org.springframework.core.convert.converter.Converter;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface CustomersDTOMapper extends Converter<List<CustomerDTO>, List<Customer>> {
+public interface PaymentMethodEntityMapper extends Converter<PaymentMethodEntity, PaymentMethodEntityDTO> {
 
     @Override
-    List<Customer> convert(List<CustomerDTO> source);
+    PaymentMethodEntityDTO convert(PaymentMethodEntity resource);
 }
