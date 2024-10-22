@@ -1,4 +1,4 @@
-package com.tourismagency.tourism_agency.config;
+package com.tourismagency.tourism_agency.configuration.app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
