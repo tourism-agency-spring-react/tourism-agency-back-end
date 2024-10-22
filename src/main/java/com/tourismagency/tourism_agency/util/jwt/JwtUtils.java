@@ -5,10 +5,12 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -19,7 +21,12 @@ public class JwtUtils {
 
         String email = authentication.getName();
 
-        Claims claims = (Claims) Jwts.claims().add("authorities", authentication.getAuthorities());
+        String authorities = authentication.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        Claims claims = Jwts.claims().add("authorities",authorities).build();
 
         return Jwts
                 .builder()

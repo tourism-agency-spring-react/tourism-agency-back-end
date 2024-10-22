@@ -7,10 +7,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final IUserRepository userRepository;
@@ -22,11 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = userRepository
-                .findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Usuario con email: " + email + " no se encontro."));
+                .findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Email o contraseña incorrectos."));
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        //Roles
         user.getRoles()
                 .forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleName().name()))));
 

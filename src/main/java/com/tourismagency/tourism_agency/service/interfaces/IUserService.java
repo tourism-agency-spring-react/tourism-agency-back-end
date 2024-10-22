@@ -10,8 +10,8 @@ public interface IUserService {
     UserDTO getUser(Long id);
 
     List<UserDTO> getAllUsers();
-    UserDTO createUser(LoginRequestDTO loginRequestDTO);
 
+    UserDTO createUser(LoginRequestDTO loginRequestDTO);
 
     void deleteUser(Long id);
 
