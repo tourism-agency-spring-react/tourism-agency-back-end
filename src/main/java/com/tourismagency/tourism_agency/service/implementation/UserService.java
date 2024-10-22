@@ -5,11 +5,10 @@ import com.tourismagency.tourism_agency.persistense.repository.IUserRepository;
 import com.tourismagency.tourism_agency.presentation.dto.LoginRequestDTO;
 import com.tourismagency.tourism_agency.presentation.dto.UserDTO;
 import com.tourismagency.tourism_agency.service.interfaces.IUserService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.core.convert.ConversionService;
+import com.tourismagency.tourism_agency.util.mapper.UserMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -17,50 +16,43 @@ public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
 
-    private final ConversionService conversionService;
-
-    public UserService(IUserRepository userRepository, ConversionService conversionService) {
+    public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.conversionService = conversionService;
-    }
-
-    @Override
-    public List<UserDTO> getUsers() {
-        return Collections.singletonList(conversionService.convert(userRepository.findAll(), UserDTO.class));
     }
 
     @Override
     public UserDTO getUser(Long id) {
-        return conversionService.convert(userRepository.findById(id), UserDTO.class);
+        UserEntity user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("El usuario no existe"));
+
+        return UserMapper.entityToDto(user);
     }
 
     @Override
-    public UserDTO createUser(LoginRequestDTO loginRequestDTO) {
-
-        UserEntity newUser = UserEntity
-                .builder()
-                .email(loginRequestDTO.email())
-                .password(loginRequestDTO.password())
-                .accountNonExpired(true)
-                .accountNonLocked(true)
-                .credentialsNonExpired(true)
-                .isEnabled(true)
-                .build();
-
-        return conversionService.convert(newUser, UserDTO.class);
+    public List<UserDTO> getAllUsers() {
+        return UserMapper.entityToDto(userRepository.findAll());
     }
 
     @Override
-    public void updateUser(Long id, LoginRequestDTO loginRequestDTO) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado."));
-        userEntity.setEmail(loginRequestDTO.email());
-        userEntity.setPassword(loginRequestDTO.password());
-        userRepository.save(userEntity);
+    public void saveUser(LoginRequestDTO user) {
+        userRepository.save(UserMapper.dtoToEntity(user));
     }
 
     @Override
     public void deleteUser(Long id) {
-        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado."));
+        if (!userRepository.existsById(id)) {
+            throw new UsernameNotFoundException("El usuario no existe");
+        }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateUser(Long id, LoginRequestDTO user) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("El usuario no existe"));
+
+        userEntity.setEmail(user.email());
+        userEntity.setPassword(user.password());
+        userRepository.save(userEntity);
     }
 }

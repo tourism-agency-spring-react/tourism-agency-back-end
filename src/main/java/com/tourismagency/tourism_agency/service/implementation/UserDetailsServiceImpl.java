@@ -7,12 +7,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final IUserRepository userRepository;
@@ -23,23 +21,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario no fue encontrado o no existe."));
+        UserEntity user = userRepository
+                .findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Usuario con email: " + email + " no se encontro."));
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        userEntity.getRoles()
+        //Roles
+        user.getRoles()
                 .forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleName().name()))));
 
         return User
                 .builder()
-                .username(userEntity.getEmail())
-                .password(userEntity.getPassword())
-                .disabled(!userEntity.isEnabled())
-                .credentialsExpired(!userEntity.isCredentialsNonExpired())
-                .accountExpired(!userEntity.isAccountNonExpired())
-                .accountLocked(!userEntity.isAccountNonLocked())
+                .username(user.getEmail())
+                .password(user.getPassword())
                 .authorities(authorities)
+                .disabled(!user.isEnabled())
+                .credentialsExpired(!user.isCredentialsNonExpired())
+                .accountExpired(!user.isAccountNonLocked())
+                .accountLocked(!user.isAccountNonLocked())
                 .build();
     }
 }
