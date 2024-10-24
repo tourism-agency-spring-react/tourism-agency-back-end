@@ -46,10 +46,13 @@ public class CustomerController implements CustomerResource {
     @PostMapping("/customer")
     public ResponseEntity<MessageResponse> create (@RequestBody @Valid CustomerDTO customerDTO){
         LOGGER.info("Creating customer");
+
         customerService.save(customerDTO);
+
         MessageResponse response = MessageResponse.builder()
                 .message("Registrado correctamente.")
                 .build();
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
