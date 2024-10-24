@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tourism_agency
+    ports:
+      - "8080:8080"
+    networks:
+      - tourism-app
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/tourism-db
+      SPRING_DATASOURCE_USERNAME: admin-mau
+      SPRING_DATASOURCE_PASSWORD: 1234
+
+  database:
+    image: mysql:latest
+    container_name: tourism-database
+    restart: always
+    networks:
+      - tourism-app
+    environment:
+      MYSQL_DATABASE: tourism-db
+      MYSQL_USER: admin-mau
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql_data:/var/lib/mysql  # Volumen para persistencia de datos
+
+networks:
+  tourism-app:
+    driver: bridge
+
+volumes:
+  mysql_data:  # Volumen para que los datos de la BD persistan

@@ -3,9 +3,9 @@ spring:
     name: tourism-agency
 
   datasource:
-    url: jdbc:mysql://localhost:3306/tourism_agency_db?useSSL=false&serverTimezone=UTC
-    username: root
-    password: ""
+    url: jdbc:mysql://database:3306/tourism-db
+    username: admin-mau
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
