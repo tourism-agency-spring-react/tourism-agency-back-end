@@ -2,6 +2,8 @@ package com.tourismagency.tourism_agency.presentation.controller;
 
 import com.tourismagency.tourism_agency.documentation.CustomerResource;
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
+import com.tourismagency.tourism_agency.presentation.dto.CustomerUpdateDTO;
+import com.tourismagency.tourism_agency.presentation.dto.LoginRequestDTO;
 import com.tourismagency.tourism_agency.presentation.payload.MessageResponse;
 import com.tourismagency.tourism_agency.service.implementation.CustomerService;
 import jakarta.validation.Valid;
@@ -44,9 +46,9 @@ public class CustomerController implements CustomerResource {
     }
 
     @PostMapping("/customer")
-    public ResponseEntity<MessageResponse> create (@RequestBody @Valid CustomerDTO customerDTO){
+    public ResponseEntity<MessageResponse> create (@RequestBody @Valid LoginRequestDTO loginRequestDTO){
         LOGGER.info("Creating customer");
-        customerService.save(customerDTO);
+        customerService.save(loginRequestDTO);
         MessageResponse response = MessageResponse.builder()
                 .message("Registrado correctamente.")
                 .build();
@@ -54,9 +56,9 @@ public class CustomerController implements CustomerResource {
     }
 
     @PutMapping("/customer/{id}")
-    public ResponseEntity<MessageResponse> update (@Min(1) @PathVariable ("id") Long id, @RequestBody @Valid CustomerDTO customerDTO){
+    public ResponseEntity<MessageResponse> update (@Min(1) @PathVariable ("id") Long id, @RequestBody @Valid CustomerUpdateDTO customerUpdateDTO){
         LOGGER.info("Updating customer with id {}", id);
-        customerService.update(id, customerDTO);
+        customerService.update(id, customerUpdateDTO);
         MessageResponse response = MessageResponse.builder()
                 .message("Actualizado correctamente.")
                 .build();

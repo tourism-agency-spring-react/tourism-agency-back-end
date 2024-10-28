@@ -37,4 +37,8 @@ public class Customer{
     @Temporal(TemporalType.DATE)
     @Column(name="birth_date")
     private LocalDate birthDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 }

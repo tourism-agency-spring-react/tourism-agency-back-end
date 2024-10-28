@@ -11,6 +11,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -30,6 +31,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO getUser(Long id) {
         UserEntity user = userRepository
                 .findById(id)
@@ -39,6 +41,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll()
                 .stream().map(user -> conversionService.convert(user, UserDTO.class)).toList();
@@ -68,6 +71,24 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserEntity createCustomerUser(LoginRequestDTO customer) {
+
+        UserEntity userEntity = UserEntity
+                .builder()
+                .email(customer.email())
+                .password(passwordEncoder.encode(customer.password()))
+                .credentialsNonExpired(true)
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .isEnabled(true)
+                .roles(Set.of(roleService.getRole(RoleEnum.CUSTOMER)))
+                .build();
+
+        return userEntity;
+    }
+
+    @Override
+    @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new UsernameNotFoundException("El usuario no existe");
@@ -76,6 +97,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void updateUser(Long id, LoginRequestDTO user) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("El usuario no existe"));
 
