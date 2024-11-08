@@ -44,7 +44,7 @@ public class TouristServiceController {
         this.conversionService = conversionService;
     }
 
-    @GetMapping("/search")
+    @GetMapping("/service/search")
     public List<TouristServiceDTO>searchService(
             @And({
                     @Spec(path = "name", spec = Equal.class),

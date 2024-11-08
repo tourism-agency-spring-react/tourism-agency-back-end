@@ -52,6 +52,7 @@ public class SecurityConfig {
                     request.requestMatchers(HttpMethod.DELETE, "/api/v1/customer/{id}").hasRole("ADMIN");
 
                     //tourist service
+                    request.requestMatchers(HttpMethod.GET, "/api/v1/service/search").hasRole("ADMIN");
                     request.requestMatchers(HttpMethod.GET, "/api/v1/service/{id}").hasRole("ADMIN");
                     request.requestMatchers(HttpMethod.GET, "/api/v1/services").hasRole("ADMIN");
                     request.requestMatchers(HttpMethod.POST, "/api/v1/customer").hasRole("ADMIN");
