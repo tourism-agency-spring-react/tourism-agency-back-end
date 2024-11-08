@@ -18,8 +18,7 @@ public class DocumentationController {
     @ResponseBody
     public void redirectToDocumentation(HttpServletResponse response){
         try{
-            response.sendRedirect("/v3/api-docs/swagger-ui.html");
-
+            response.sendRedirect("swagger-ui.html");
         }catch (IOException e){
             StringBuilder sb = new StringBuilder("UNEXPECTED ERROR");
             if(e.getMessage() != null){

@@ -9,3 +9,4 @@ public enum ServiceTypeEnum {
     EXCURSIONS,
     EVENTS
 }
+

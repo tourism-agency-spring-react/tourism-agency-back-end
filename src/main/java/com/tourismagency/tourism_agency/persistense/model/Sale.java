@@ -1,6 +1,5 @@
 package com.tourismagency.tourism_agency.persistense.model;
 
-import com.tourismagency.tourism_agency.enums.PaymentMethodEnum;
 import jakarta.persistence.*;
 import lombok.*;
 

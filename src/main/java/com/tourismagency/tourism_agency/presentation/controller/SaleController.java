@@ -27,7 +27,7 @@ public class SaleController {
 
     @GetMapping("/sales")
     public ResponseEntity<List<SaleDTO>> getAllSales() {
-        LOGGER.info("Geting all salles");
+        LOGGER.info("Getting all salles");
         List<SaleDTO> response = saleService.getAllSales();
         if(response.isEmpty()){
             return ResponseEntity.noContent().build();
