@@ -23,7 +23,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,6 +66,7 @@ public class SecurityConfig {
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
         return urlBasedCorsConfigurationSource;
     }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

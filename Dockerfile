@@ -1,23 +1,20 @@
 #Definir la imagen base que se usara para la construccion del proyecto
-FROM openjdk:17-alpine AS builder
+FROM maven:3.6-openjdk-17 AS builder
 
 #Definir el directorio raiz de nuestro contenedor
 WORKDIR /tourism-app
 
 #se copian los archivos en el directorio del contenedor
-COPY ./.mvn /tourism-app/.mvn
-COPY ./pom.xml /tourism-app
-COPY ./mvnw /tourism-app
+COPY pom.xml /tourism-app
 
 #se descargan las dependencias
-RUN dos2unix mvnw
-RUN ./mvnw dependency:go-offline
+RUN mvn dependency:go-offline -B
 
 #se copia el codigo fuente dentro el contenedor
 COPY ./src /tourism-app/src
 
 #se construye el ejecutable .jar
-RUN ./mvnw clean install
+RUN mvn clean install -DskipTests
 
 #definimos la imagen base para nuestra aplicacion
 FROM openjdk:17-alpine
