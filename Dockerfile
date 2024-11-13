@@ -29,6 +29,7 @@ EXPOSE 8080
 COPY --from=builder /tourism-app/target/*.jar /tourism-app/app.jar
 
 #definimos comandos que se ejecutaran cuando el contenedor se levante
-ENTRYPOINT ["java", "-jar", "/tourism-app/app.jar"]
+ENTRYPOINT ["sh", "-c", "until nc -z database 3306; do echo Waiting for MySQL...; sleep 3; done; java -jar /tourism-app/app.jar"]
+
 
 

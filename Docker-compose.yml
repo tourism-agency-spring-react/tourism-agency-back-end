@@ -18,7 +18,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: 1234
 
   database:
-    image: mysql:latest
+    image: mysql:8.0
     container_name: tourism-database
     restart: always
     networks:
@@ -29,11 +29,12 @@ services:
       MYSQL_PASSWORD: 1234
       MYSQL_ROOT_PASSWORD: rootpassword
     volumes:
-      - mysql_data:/var/lib/mysql  # Volumen para persistencia de datos
+      - mysql_data:/var/lib/mysql
 
 networks:
   tourism-app:
     driver: bridge
 
 volumes:
-  mysql_data:  # Volumen para que los datos de la BD persistan
+  mysql_data:
+
