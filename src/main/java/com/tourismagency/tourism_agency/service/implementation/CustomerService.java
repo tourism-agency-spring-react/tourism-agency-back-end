@@ -1,20 +1,25 @@
 package com.tourismagency.tourism_agency.service.implementation;
 
 import com.tourismagency.tourism_agency.persistense.model.Customer;
+import com.tourismagency.tourism_agency.persistense.model.UserEntity;
 import com.tourismagency.tourism_agency.persistense.repository.ICustomerRepository;
+import com.tourismagency.tourism_agency.persistense.repository.IUserRepository;
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
+import com.tourismagency.tourism_agency.presentation.dto.CustomerUpdateDTO;
+import com.tourismagency.tourism_agency.presentation.dto.LoginRequestDTO;
 import com.tourismagency.tourism_agency.service.exception.ApiError;
 import com.tourismagency.tourism_agency.service.exception.TourismAgencyException;
 import com.tourismagency.tourism_agency.service.interfaces.ICustomerService;
+import com.tourismagency.tourism_agency.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,6 +29,12 @@ public class CustomerService implements ICustomerService {
     private final ICustomerRepository customerRepository;
 
     private final ConversionService conversionService;
+
+    private final IUserService userService;
+
+    private final IUserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
@@ -50,35 +61,41 @@ public class CustomerService implements ICustomerService {
 
     @Override
     @Transactional
-    public void save(CustomerDTO customerDTO) {
-        if(Objects.nonNull(customerDTO.id())){
-            LOGGER.error("Attempt to save a customer with an existing ID: {}", customerDTO.id());
-            throw new TourismAgencyException(ApiError.CUSTOMER_WITH_SAME_ID);
-        }
+    public void save(LoginRequestDTO loginRequestDTO) {
 
-        Customer transformed = conversionService.convert(customerDTO, Customer.class);
-        assert transformed != null;
-        customerRepository.save(transformed);
-        LOGGER.info("Customer created with ID: {}", transformed.getId());
+        UserEntity newUser = userService.createCustomerUser(loginRequestDTO);
+        LOGGER.info("Creating new Customer");
+        Customer customer = Customer
+                .builder()
+                .user(newUser)
+                .build();
+
+        customerRepository.save(customer);
+        LOGGER.info("Customer saved with ID {}", customer.getId());
     }
 
     @Override
     @Transactional
-    public void update(Long id, CustomerDTO customerDTO) {
-        if(customerRepository.findById(id).isPresent()) {
+    public void update(Long id, CustomerUpdateDTO customerUpdateDTO) {
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> {
             LOGGER.error("Attempt to update non-existing customer with ID: {}", id);
-            throw new TourismAgencyException(ApiError.CUSTOMER_NOT_FOUND);
-        }
-        Customer transformed = conversionService.convert(customerDTO, Customer.class);
-        assert transformed != null;
-        transformed.setId(id);
-        transformed.setId(customerDTO.id());
-        transformed.setFirstName(customerDTO.firstName());
-        transformed.setLastName(customerDTO.lastName());
-        transformed.setDni(customerDTO.dni());
-        transformed.setPhoneNumber(customerDTO.phoneNumber());
-        transformed.setBirthDate(customerDTO.birthDate());
-        customerRepository.save(transformed);
+            return new TourismAgencyException(ApiError.CUSTOMER_NOT_FOUND);
+        });
+
+        LOGGER.info("Updating user of Customer with id: {}", customer.getUser().getId());
+        userRepository.findById(customer.getUser().getId()).ifPresent(user -> {
+            user.setEmail(customerUpdateDTO.email());
+            user.setPassword(passwordEncoder.encode(customerUpdateDTO.password()));
+        });
+
+        LOGGER.info("Updating customer");
+        customer.setFirstName(customerUpdateDTO.firstName());
+        customer.setLastName(customerUpdateDTO.lastName());
+        customer.setDni(customerUpdateDTO.dni());
+        customer.setPhoneNumber(customerUpdateDTO.phoneNumber());
+        customer.setBirthDate(customerUpdateDTO.birthDate());
+        customer.setDirection(customerUpdateDTO.direction());
+        customerRepository.save(customer);
         LOGGER.info("Customer with ID {} updated successfully", id);
     }
 

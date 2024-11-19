@@ -1,5 +1,6 @@
 package com.tourismagency.tourism_agency.presentation.controller;
 
+import com.tourismagency.tourism_agency.documentation.UserResource;
 import com.tourismagency.tourism_agency.presentation.dto.LoginRequestDTO;
 import com.tourismagency.tourism_agency.presentation.dto.UserDTO;
 import com.tourismagency.tourism_agency.presentation.payload.AuthResponse;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
-public class UserController {
+public class UserController implements UserResource{
 
     private final UserService userService;
     private final IAuthService authService;

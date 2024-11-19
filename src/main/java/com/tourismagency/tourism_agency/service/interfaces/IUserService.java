@@ -1,5 +1,6 @@
 package com.tourismagency.tourism_agency.service.interfaces;
 
+import com.tourismagency.tourism_agency.persistense.model.UserEntity;
 import com.tourismagency.tourism_agency.presentation.dto.LoginRequestDTO;
 import com.tourismagency.tourism_agency.presentation.dto.UserDTO;
 
@@ -12,6 +13,8 @@ public interface IUserService {
     List<UserDTO> getAllUsers();
 
     UserDTO createUser(LoginRequestDTO loginRequestDTO);
+
+    UserEntity createCustomerUser(LoginRequestDTO loginRequestDTO);
 
     void deleteUser(Long id);
 

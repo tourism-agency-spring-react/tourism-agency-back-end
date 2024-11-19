@@ -2,6 +2,8 @@ package com.tourismagency.tourism_agency.documentation;
 
 import com.tourismagency.tourism_agency.presentation.advice.response.ErrorApiResponse;
 import com.tourismagency.tourism_agency.presentation.dto.CustomerDTO;
+import com.tourismagency.tourism_agency.presentation.dto.CustomerUpdateDTO;
+import com.tourismagency.tourism_agency.presentation.dto.LoginRequestDTO;
 import com.tourismagency.tourism_agency.presentation.payload.MessageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -144,7 +146,7 @@ public interface CustomerResource {
                     )
             }
     )
-    ResponseEntity<MessageResponse> create (@RequestBody @Valid CustomerDTO customerDTO);
+    ResponseEntity<MessageResponse> create (@RequestBody @Valid LoginRequestDTO loginRequestDTO);
 
     @Operation(
             description = "Update one customer",
@@ -179,7 +181,7 @@ public interface CustomerResource {
                     )
             }
     )
-    ResponseEntity<MessageResponse> update (@Min(1) @PathVariable ("id") Long id, @RequestBody @Valid CustomerDTO customerDTO);
+    ResponseEntity<MessageResponse> update (@Min(1) @PathVariable ("id") Long id, @RequestBody @Valid CustomerUpdateDTO customerUpdateDTO);
 
     @Operation(
             description = "Deleted one customer",
