@@ -3,16 +3,10 @@ spring:
     name: tourism-agency
 
   datasource:
-    url: ${MYSQL_PUBLIC_URL}
+    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQL_DATABASE}
     username: ${MYSQLUSER}
     password: ${MYSQLPASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      idle-timeout: 30000
-      max-lifetime: 1800000
-      connection-timeout: 20000
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
