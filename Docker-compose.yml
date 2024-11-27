@@ -8,33 +8,7 @@ services:
     container_name: tourism_agency
     ports:
       - "8080:8080"
-    networks:
-      - tourism-app
-    depends_on:
-      - database
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/tourism-db
-      SPRING_DATASOURCE_USERNAME: admin-mau
-      SPRING_DATASOURCE_PASSWORD: 1234
-
-  database:
-    image: mysql:8.0
-    container_name: tourism-database
-    restart: always
-    networks:
-      - tourism-app
-    environment:
-      MYSQL_DATABASE: tourism-db
-      MYSQL_USER: admin-mau
-      MYSQL_PASSWORD: 1234
-      MYSQL_ROOT_PASSWORD: rootpassword
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-networks:
-  tourism-app:
-    driver: bridge
-
-volumes:
-  mysql_data:
-
+      SPRING_DATASOURCE_URL: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQL_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MYSQLUSER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQLPASSWORD}

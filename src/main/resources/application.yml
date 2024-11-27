@@ -3,9 +3,9 @@ spring:
     name: tourism-agency
 
   datasource:
-    url: jdbc:mysql://database:3306/tourism-db?autoReconnect=true&connectTimeout=10000&socketTimeout=30000&retriesAllDown=3
-    username: admin-mau
-    password: 1234
+    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQL_DATABASE}?autoReconnect=true&connectTimeout=10000&socketTimeout=30000&retriesAllDown=3
+    username: ${MYSQLUSER}
+    password: ${MYSQLPASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
